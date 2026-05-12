@@ -138,6 +138,7 @@ export default function FunnelClient() {
             email,
             first_name: name,
             fields: { phone },
+            tags: [18774682],
           }),
         })
       }
