@@ -501,13 +501,13 @@ export default function FunnelClient() {
                 <div className="w-full" style={fadeIn(5)}>
                   <div className="funnel-card rounded-lg p-5 md:p-6 mx-auto"
                     style={{ maxWidth: '64%', background: '#1A0800', border: '1.5px solid #D85A30' }}>
-                    <p className="text-xs font-bold tracking-widest uppercase mb-0.5" style={{ color: '#F97316' }}>HIGH TICKET / PARTNERSHIP</p>
+                    <p className="text-xs font-bold tracking-widest uppercase mb-0.5" style={{ color: '#F97316' }}>HIGH TICKET</p>
                     <p className="text-sm text-muted mb-1">$2,500–$20,000</p>
                     <p className="text-xs text-muted leading-relaxed mb-3 opacity-80">
                       If they went through the system they&apos;re already qualified. We don&apos;t take cold applicants.
                     </p>
                     <div className="flex flex-wrap gap-2 mb-3">
-                      {['90-Day Sprint', 'Full Partnership', '30% Rev Share'].map(tag => (
+                      {['Done For You', 'Full Access', 'Direct Communication', '90-Day Sprint'].map(tag => (
                         <span key={tag} className="text-xs font-semibold px-2.5 py-1 rounded"
                           style={{ background: '#F9731618', color: '#F97316' }}>{tag}</span>
                       ))}
