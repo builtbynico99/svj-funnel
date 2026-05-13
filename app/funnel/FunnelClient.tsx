@@ -126,21 +126,15 @@ export default function FunnelClient() {
     setError('')
 
     try {
-      const formId = process.env.NEXT_PUBLIC_CONVERTKIT_FORM_ID
-      const apiKey = process.env.NEXT_PUBLIC_CONVERTKIT_API_KEY
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, first_name: name, phone }),
+      })
 
-      if (formId && apiKey) {
-        await fetch(`https://api.convertkit.com/v3/forms/${formId}/subscribe`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            api_key: apiKey,
-            email,
-            first_name: name,
-            fields: { phone },
-            tags: [18774682],
-          }),
-        })
+      if (!res.ok) {
+        const data = await res.json()
+        throw new Error(data.error ?? 'Subscription failed')
       }
 
       localStorage.setItem('svj_funnel_submitted', '1')
