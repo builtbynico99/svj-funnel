@@ -24,5 +24,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: data }, { status: res.status })
   }
 
+  // Send to Make webhook for Google Sheets logging
+  await fetch('https://hook.us2.make.com/nqywdyoxdc4nphj78qubd78ng1snfx70', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: first_name,
+      email,
+      phone: phone ?? '',
+      date: new Date().toISOString(),
+    }),
+  }).catch(() => {})
+
   return NextResponse.json({ success: true })
 }
