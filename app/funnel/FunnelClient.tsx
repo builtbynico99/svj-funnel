@@ -5,7 +5,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 const WHOP_PRODUCT_URL = 'https://whop.com/svj-community/svj-media-30-day-blueprint/'
 
 const shortFormStep1 = {
-  tags: ['TikTok', 'Reels', 'Clips', 'ManyChat Trigger'],
+  tags: ['TikTok', 'Reels', 'YouTube Shorts', 'Clips', 'ManyChat Trigger'],
   arrow: 'They watch. They comment the word. ManyChat fires a DM in seconds.',
   badge: null,
 }
@@ -23,7 +23,8 @@ const funnelBase = [
     accent: '#8B5CF6',
     label: 'OPT-IN PAGE',
     sublabel: 'Own Your Audience',
-    tags: ['Email', 'Phone', 'Name'],
+    sublabelDetail: 'This is where you offer free value. A checklist, a guide, a resource — something worth trading an email for. They get it for free. You get the contact.',
+    tags: ['Email', 'Phone', 'Name', 'Free Product'],
     arrow: 'They give you contact info. You own the line now. No algorithm cuts you off.',
   },
   {
@@ -56,12 +57,22 @@ const funnelBase = [
   },
 ]
 
-const stats = [
+const shortFormStats = [
   { pct: '100%', label: 'See your content', condition: 'If you post right.' },
   { pct: '10%', label: 'Opt in', condition: 'If the hook is real.' },
   { pct: '3%', label: 'Buy the $97', condition: 'If the sequence works.' },
+  { pct: '0.5%', label: 'Go high ticket', condition: 'The ones who are ready.' },
+]
+
+const longFormStats = [
+  { pct: '100%', label: 'See your content', condition: 'If you post right.' },
+  { pct: '15%', label: 'Opt in', condition: 'Long form builds real trust.' },
+  { pct: '5%', label: 'Buy the $97', condition: 'Warmer leads convert higher.' },
   { pct: '1%', label: 'Go high ticket', condition: 'The ones who are ready.' },
 ]
+
+const shortFormRates = { optIn: 0.10, lowTicket: 0.03, highTicket: 0.005 }
+const longFormRates  = { optIn: 0.15, lowTicket: 0.05, highTicket: 0.01 }
 
 const forYou = [
   "You have an audience but no system behind it",
@@ -120,12 +131,16 @@ function fmt(n: number) {
   return `$${n}`
 }
 
-function FunnelCalc({ audience, setAudience }: { audience: number; setAudience: (n: number) => void }) {
+function FunnelCalc({ audience, setAudience, rates }: {
+  audience: number
+  setAudience: (n: number) => void
+  rates: typeof shortFormRates
+}) {
   const [inputVal, setInputVal] = useState(audience.toLocaleString())
 
-  const optIns = Math.round(audience * 0.10)
-  const lowTicketBuyers = Math.round(optIns * 0.03)
-  const highTicketBuyers = Math.round(optIns * 0.005)
+  const optIns = Math.round(audience * rates.optIn)
+  const lowTicketBuyers = Math.round(optIns * rates.lowTicket)
+  const highTicketBuyers = Math.round(optIns * rates.highTicket)
   const lowTicketRev = lowTicketBuyers * 97
   const highTicketRevLow = highTicketBuyers * 1500
   const highTicketRevHigh = highTicketBuyers * 10000
@@ -322,8 +337,8 @@ export default function FunnelClient() {
         }
       `}</style>
 
-      <main className="min-h-screen bg-bg text-white font-sans">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-16 md:py-20">
+      <main className="min-h-screen bg-bg text-white font-sans overflow-x-hidden">
+        <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 py-16 md:py-20 overflow-x-hidden">
 
           {/* ── GATE ── */}
           {!submitted && (
@@ -514,7 +529,11 @@ export default function FunnelClient() {
                       <p className="text-xs font-bold tracking-widest uppercase mb-0.5" style={{ color: step.accent }}>
                         {step.label}
                       </p>
-                      <p className="text-sm text-muted mb-3">{step.sublabel}</p>
+                      <p className="text-sm text-muted mb-1">{step.sublabel}</p>
+                      {'sublabelDetail' in step && step.sublabelDetail && (
+                        <p className="text-xs text-muted leading-relaxed mb-3 opacity-80">{step.sublabelDetail as string}</p>
+                      )}
+                      {!('sublabelDetail' in step && step.sublabelDetail) && <div className="mb-3" />}
                       <div className="flex flex-wrap gap-2">
                         {step.tags.map(tag => (
                           <span key={tag} className="text-xs font-semibold px-2.5 py-1 rounded"
@@ -541,7 +560,7 @@ export default function FunnelClient() {
               <div className="mt-20">
                 <p className="text-xs font-bold tracking-widest uppercase text-muted text-center mb-8">The Numbers</p>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {stats.map(s => (
+                  {(mode === 'short' ? shortFormStats : longFormStats).map(s => (
                     <div key={s.pct} className="bg-card border rounded-lg p-5 text-center" style={{ borderColor: '#1A1A1A' }}>
                       <p className="text-3xl font-bold text-white">{s.pct}</p>
                       <p className="text-sm font-semibold text-white mt-1">{s.label}</p>
@@ -552,7 +571,7 @@ export default function FunnelClient() {
               </div>
 
               {/* Calculator */}
-              <FunnelCalc audience={audience} setAudience={setAudience} />
+              <FunnelCalc audience={audience} setAudience={setAudience} rates={mode === 'short' ? shortFormRates : longFormRates} />
 
               {/* Qualifier */}
               <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-6">
