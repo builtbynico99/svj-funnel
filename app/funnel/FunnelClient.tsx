@@ -20,7 +20,7 @@ const shortFormStats = [
   { pct: '100%', label: 'See your content',  condition: 'If you post right.' },
   { pct: '10%',  label: 'Opt in',            condition: 'If the hook is real.' },
   { pct: '3%',   label: 'Buy the $97',       condition: 'If the sequence works.' },
-  { pct: '1%',   label: 'Mid ticket',        condition: 'Buyers who want the next level.' },
+  { pct: '0.5%', label: 'Mid ticket',        condition: 'Buyers who want the next level.' },
   { pct: '0.1%', label: 'Go high ticket',    condition: 'The ones who are ready.' },
 ]
 
@@ -32,7 +32,7 @@ const longFormStats = [
   { pct: '0.5%', label: 'Go high ticket',    condition: 'The ones who are ready.' },
 ]
 
-const shortFormRates = { optIn: 0.10, lowTicket: 0.03, midTicket: 0.01,  highTicket: 0.001 }
+const shortFormRates = { optIn: 0.10, lowTicket: 0.03, midTicket: 0.005, highTicket: 0.001 }
 const longFormRates  = { optIn: 0.15, lowTicket: 0.05, midTicket: 0.01,  highTicket: 0.005 }
 
 const forYou = [
